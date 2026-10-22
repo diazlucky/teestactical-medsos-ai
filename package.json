@@ -1,0 +1,12 @@
+{
+  "name": "teestactical-medsos-ai",
+  "version": "1.0.0",
+  "description": "AI Social Media Command Center & Kalender Konten Otomatis untuk TEESTACTICAL",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["ai", "social-media", "content-calendar", "teestactical"],
+  "author": "TEESTACTICAL",
+  "license": "ISC"
+}

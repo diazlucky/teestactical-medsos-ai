@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" width="240" height="60" fill="none">
+  <!-- Shield / Emblem Icon -->
+  <g transform="translate(10, 8)">
+    <polygon points="22,2 40,9 40,28 22,42 4,28 4,9" fill="#000955" stroke="#ffffff" stroke-width="2.5" />
+    <path d="M 22 7 L 34 12 L 34 26 L 22 36 L 10 26 L 10 12 Z" fill="#00d2ff" opacity="0.9" />
+    <!-- Tactical T Symbol inside Shield -->
+    <path d="M 15 17 L 29 17 M 22 17 L 22 30" stroke="#000955" stroke-width="3" stroke-linecap="round" />
+  </g>
+
+  <!-- Typography -->
+  <text x="62" y="32" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="900" font-size="20" fill="#ffffff" letter-spacing="1.5">
+    TEES<tspan fill="#00d2ff">TACTICAL</tspan>
+  </text>
+  <text x="63" y="47" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="600" font-size="9" fill="#e2e8f0" letter-spacing="3">
+    CUSTOM JERSEY APPAREL
+  </text>
+</svg>
+

@@ -1,0 +1,1863 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Social Media Command Center | TEESTACTICAL</title>
+  
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#000955">
+
+  <link rel="icon" type="image/png" href="assets/images/logo-teestactical.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: {
+              DEFAULT: '#000955',
+              dark: '#00052a',
+              light: '#0a1780',
+              surface: '#f4f7ff',
+            },
+            cyanAccent: '#00d2ff',
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .scrollbar-thin::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background-color: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .calendar-cell {
+      min-height: 110px;
+    }
+    @media (max-width: 768px) {
+      .calendar-cell {
+        min-height: 75px;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col md:flex-row antialiased overflow-x-hidden">
+
+  <!-- ========================================================
+       SIDEBAR NAVIGASI KIRI (MODERN VERTICAL DASHBOARD)
+       ======================================================== -->
+  <aside class="w-full md:w-64 lg:w-72 bg-navy text-white flex-shrink-0 flex flex-col justify-between border-r border-navy-light shadow-xl z-30 sticky top-0 md:h-screen">
+    
+    <!-- Top Brand & Menu -->
+    <div class="p-4 sm:p-5 space-y-6">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-2xl bg-white p-1.5 flex items-center justify-center shadow-md">
+          <img src="assets/images/logo-teestactical.png" alt="Logo" class="max-h-full max-w-full object-contain" onerror="this.src='assets/images/logo.svg'">
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="font-extrabold tracking-wider text-white text-base">TEESTACTICAL</span>
+            <span class="px-1.5 py-0.2 text-[9px] font-bold bg-cyanAccent/20 text-cyanAccent rounded border border-cyanAccent/30 uppercase">AI</span>
+          </div>
+          <p class="text-[11px] text-slate-300">Social Media Admin Hub</p>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="space-y-1.5">
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Menu Utama</p>
+
+        <!-- 1. Dashboard Ringkasan -->
+        <button onclick="switchTab('dashboard')" id="nav-btn-dashboard" class="nav-item active w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition bg-cyanAccent/10 text-cyanAccent border border-cyanAccent/30">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+            <span>Dashboard Hari Ini</span>
+          </div>
+          <span class="w-2 h-2 rounded-full bg-cyanAccent"></span>
+        </button>
+
+        <!-- 2. Kalender Konten -->
+        <button onclick="switchTab('calendar')" id="nav-btn-calendar" class="nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="calendar" class="w-4 h-4"></i>
+            <span>Kalender Konten</span>
+          </div>
+          <span id="nav-calendar-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/30 text-indigo-200">0</span>
+        </button>
+
+        <!-- 3. Upload Hub (5 Tombol Tematik) -->
+        <button onclick="switchTab('upload')" id="nav-btn-upload" class="nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="upload-cloud" class="w-4 h-4"></i>
+            <span>Upload Hub (5 Pilar)</span>
+          </div>
+          <span class="text-[10px] font-bold text-slate-400">Auto-Pilot</span>
+        </button>
+
+        <!-- 4. AI Studio -->
+        <button onclick="switchTab('studio')" id="nav-btn-studio" class="nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+            <span>AI Prompt Studio</span>
+          </div>
+        </button>
+
+        <!-- 5. Analytics -->
+        <button onclick="switchTab('analytics')" id="nav-btn-analytics" class="nav-item w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition">
+          <div class="flex items-center gap-2.5">
+            <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+            <span>Laporan & Performa</span>
+          </div>
+        </button>
+      </nav>
+
+    </div>
+
+    <!-- Bottom Sidebar Status & Info -->
+    <div class="p-4 sm:p-5 border-t border-slate-800/80 space-y-3 bg-navy-dark/40">
+      
+      <!-- System Heartbeat -->
+      <div class="flex items-center gap-2 text-xs">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-slate-300">Bot Scheduler: <strong class="text-emerald-300">Standby</strong></span>
+      </div>
+
+      <!-- Admin WA Info -->
+      <div class="bg-white/5 rounded-xl p-2.5 border border-white/5 text-[11px] space-y-1">
+        <p class="text-slate-400 font-medium">WhatsApp Admin Resmi:</p>
+        <p class="font-bold text-cyanAccent flex items-center gap-1">
+          <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> +62895423467070
+        </p>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="openApiModal()" class="w-full flex items-center justify-center gap-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 py-2 rounded-xl border border-slate-600 transition font-medium">
+          <i data-lucide="settings" class="w-3.5 h-3.5 text-cyanAccent"></i>
+          <span>Pengaturan AI</span>
+        </button>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ========================================================
+       MAIN CONTENT VIEWPORT
+       ======================================================== -->
+  <div class="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
+
+    <!-- Top Sticky Header -->
+    <header class="bg-white border-b border-slate-200 px-4 sm:px-6 py-3.5 flex items-center justify-between sticky top-0 z-20">
+      <div class="flex items-center gap-3">
+        <h1 class="text-base sm:text-lg font-bold text-slate-900" id="current-view-title">Dashboard Ringkasan Hari Ini</h1>
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <button onclick="switchTab('upload')" class="px-3 py-1.5 rounded-xl bg-navy hover:bg-navy-light text-cyanAccent border border-cyanAccent/30 text-xs font-bold flex items-center gap-1.5 transition shadow-xs">
+          <i data-lucide="plus" class="w-4 h-4"></i>
+          <span>Upload Bahan Baru</span>
+        </button>
+        <div class="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200">
+          <i data-lucide="clock" class="w-3.5 h-3.5 text-cyan-700"></i>
+          <span id="live-clock-badge">WIB</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENT BODY -->
+    <main class="flex-1 p-4 sm:p-6 lg:p-8 space-y-6 max-w-7xl w-full mx-auto">
+
+      <!-- ========================================================
+           TAB 0: DASHBOARD RINGKASAN HARI INI
+           ======================================================== -->
+      <section id="tab-dashboard" class="tab-content space-y-6">
+        
+        <!-- Welcome Hero Banner -->
+        <div class="bg-gradient-to-r from-navy via-navy-light to-navy p-6 rounded-3xl text-white shadow-lg border border-slate-700/50 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+          <div class="space-y-1.5 max-w-2xl">
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-cyanAccent/20 text-cyanAccent uppercase tracking-wide">Ringkasan Operasional</span>
+              <span class="text-xs text-slate-300" id="hero-today-date">Kamis, 22 Oktober 2026</span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-black">Halo Tim TEESTACTICAL! 👋</h2>
+            <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">
+              Semua sistem AI berjalan normal dengan **5 Pilar Konten** aktif (Portofolio, Produksi, Edukasi, Pengiriman, Testimoni). Anda memiliki <strong class="text-cyanAccent font-bold" id="dash-today-count-text">0 postingan</strong> terjadwal untuk hari ini.
+            </p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2.5 w-full md:w-auto">
+            <button onclick="switchTab('calendar')" class="px-4 py-2.5 rounded-xl bg-white text-navy font-bold text-xs hover:bg-slate-100 transition shadow flex items-center gap-2">
+              <i data-lucide="calendar" class="w-4 h-4"></i> Buka Kalender Konten
+            </button>
+            <button onclick="switchTab('upload')" class="px-4 py-2.5 rounded-xl bg-cyanAccent text-navy font-bold text-xs hover:bg-cyanAccent/90 transition shadow flex items-center gap-2">
+              <i data-lucide="upload-cloud" class="w-4 h-4"></i> Upload Bahan
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Quick Summary Stat Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between">
+            <div>
+              <p class="text-[11px] font-semibold text-slate-500">Jadwal Tayang Hari Ini</p>
+              <p class="text-2xl font-black text-navy mt-1" id="dash-stat-today">0</p>
+              <p class="text-[10px] text-cyan-600 font-medium mt-0.5">Siap tayang tepat waktu</p>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center font-bold">
+              <i data-lucide="send" class="w-5 h-5"></i>
+            </div>
+          </div>
+
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between">
+            <div>
+              <p class="text-[11px] font-semibold text-slate-500">Antrean 7 Hari Kedepan</p>
+              <p class="text-2xl font-black text-indigo-600 mt-1" id="dash-stat-week">0</p>
+              <p class="text-[10px] text-emerald-600 font-medium mt-0.5 flex items-center gap-0.5">
+                <i data-lucide="check" class="w-3 h-3"></i> Terdistribusi rata
+              </p>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
+              <i data-lucide="calendar-check" class="w-5 h-5"></i>
+            </div>
+          </div>
+
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between">
+            <div>
+              <p class="text-[11px] font-semibold text-slate-500">Total Jadwal Bulan Ini</p>
+              <p class="text-2xl font-black text-amber-600 mt-1" id="dash-stat-total">0</p>
+              <p class="text-[10px] text-slate-400 mt-0.5">Semua 5 pilar konten</p>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
+              <i data-lucide="layers" class="w-5 h-5"></i>
+            </div>
+          </div>
+
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between">
+            <div>
+              <p class="text-[11px] font-semibold text-slate-500">Estimasi Order Masuk</p>
+              <p class="text-2xl font-black text-emerald-600 mt-1">84 Chat</p>
+              <p class="text-[10px] text-slate-400 mt-0.5">Dijawab admin WhatsApp</p>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+              <i data-lucide="message-square" class="w-5 h-5"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Two Columns: Today's Schedule + Content Balance (5 Pillars) -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          <!-- Left: Today's Scheduled Queue (2 cols) -->
+          <div class="lg:col-span-2 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div class="flex items-center gap-2">
+                <i data-lucide="flame" class="w-5 h-5 text-rose-500"></i>
+                <h3 class="font-bold text-slate-900 text-sm">Postingan Siap Tayang Hari Ini</h3>
+              </div>
+              <span class="text-xs text-slate-500 font-semibold" id="dash-today-date-badge">Hari Ini</span>
+            </div>
+
+            <!-- List of Today's Posts -->
+            <div id="dash-today-posts-list" class="space-y-3">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Right: Content Matrix Balance (5 Pillars) -->
+          <div class="lg:col-span-1 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
+                <i data-lucide="pie-chart" class="w-5 h-5 text-cyan-700"></i>
+                <h3 class="font-bold text-slate-900 text-sm">Keseimbangan 5 Pilar Konten</h3>
+              </div>
+
+              <p class="text-xs text-slate-500 leading-relaxed">
+                Keseimbangan pilar konten memastikan feeds Anda kaya manfaat, tidak melulu jualan, dan membangun kepercayaan pembeli:
+              </p>
+
+              <!-- Progress Bars per 5 categories -->
+              <div class="space-y-2.5 text-xs">
+                <div>
+                  <div class="flex justify-between font-semibold text-slate-700 mb-1">
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-cyan-500"></span> 🎨 Portofolio Desain</span>
+                    <span id="dash-bar-portfolio-count">0 post</span>
+                  </div>
+                  <div class="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
+                    <div id="dash-bar-portfolio" class="h-full bg-cyan-500 rounded-full" style="width: 20%"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="flex justify-between font-semibold text-slate-700 mb-1">
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> 🏭 Proses Produksi</span>
+                    <span id="dash-bar-production-count">0 post</span>
+                  </div>
+                  <div class="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
+                    <div id="dash-bar-production" class="h-full bg-indigo-500 rounded-full" style="width: 20%"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="flex justify-between font-semibold text-slate-700 mb-1">
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-purple-600"></span> 📚 Edukasi & Tips</span>
+                    <span id="dash-bar-education-count">0 post</span>
+                  </div>
+                  <div class="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
+                    <div id="dash-bar-education" class="h-full bg-purple-600 rounded-full" style="width: 20%"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="flex justify-between font-semibold text-slate-700 mb-1">
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> 📦 Bukti Pengiriman</span>
+                    <span id="dash-bar-shipping-count">0 post</span>
+                  </div>
+                  <div class="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
+                    <div id="dash-bar-shipping" class="h-full bg-amber-500 rounded-full" style="width: 20%"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="flex justify-between font-semibold text-slate-700 mb-1">
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> 🏆 Testimoni Customer</span>
+                    <span id="dash-bar-testimonial-count">0 post</span>
+                  </div>
+                  <div class="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
+                    <div id="dash-bar-testimonial" class="h-full bg-emerald-500 rounded-full" style="width: 20%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-slate-100">
+              <button onclick="switchTab('upload')" class="w-full py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold text-xs border border-slate-200 transition flex items-center justify-center gap-2">
+                <i data-lucide="plus-circle" class="w-4 h-4 text-cyan-600"></i>
+                Tambah Bahan ke Kategori Kosong
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ========================================================
+           TAB 1: KALENDER KONTEN INTERAKTIF (MONTHLY GRID)
+           ======================================================== -->
+      <section id="tab-calendar" class="tab-content hidden space-y-5">
+        
+        <!-- Calendar Control Header -->
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          
+          <!-- Month Navigation -->
+          <div class="flex items-center gap-3">
+            <div class="flex items-center bg-slate-100 rounded-xl p-1 border border-slate-200">
+              <button onclick="changeMonth(-1)" class="p-1.5 rounded-lg hover:bg-white text-slate-700 transition" title="Bulan Sebelumnya">
+                <i data-lucide="chevron-left" class="w-5 h-5"></i>
+              </button>
+              <button onclick="goToCurrentMonth()" class="px-3 py-1 text-xs font-bold text-slate-800 hover:bg-white rounded-lg transition">
+                Hari Ini
+              </button>
+              <button onclick="changeMonth(1)" class="p-1.5 rounded-lg hover:bg-white text-slate-700 transition" title="Bulan Berikutnya">
+                <i data-lucide="chevron-right" class="w-5 h-5"></i>
+              </button>
+            </div>
+            <h2 class="text-lg sm:text-xl font-extrabold text-navy" id="calendar-month-year-label">Oktober 2026</h2>
+          </div>
+
+          <!-- View Switcher & Action Buttons -->
+          <div class="flex flex-wrap items-center gap-2 w-full md:w-auto justify-between md:justify-end">
+            
+            <!-- Category Legend (5 Categories) -->
+            <div class="hidden xl:flex items-center gap-2.5 text-xs pr-2 border-r border-slate-200">
+              <span class="flex items-center gap-1 font-medium text-slate-600"><span class="w-2.5 h-2.5 rounded-full bg-cyan-500"></span> Portofolio</span>
+              <span class="flex items-center gap-1 font-medium text-slate-600"><span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> Produksi</span>
+              <span class="flex items-center gap-1 font-medium text-slate-600"><span class="w-2.5 h-2.5 rounded-full bg-purple-600"></span> Edukasi</span>
+              <span class="flex items-center gap-1 font-medium text-slate-600"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Pengiriman</span>
+              <span class="flex items-center gap-1 font-medium text-slate-600"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Testimoni</span>
+            </div>
+
+            <!-- View Toggle: Grid vs List -->
+            <div class="flex bg-slate-100 p-1 rounded-xl text-xs">
+              <button onclick="setCalendarView('grid')" id="view-mode-grid" class="px-3 py-1.5 rounded-lg font-bold bg-white text-navy shadow-xs flex items-center gap-1.5 transition">
+                <i data-lucide="grid" class="w-3.5 h-3.5"></i> Kalender
+              </button>
+              <button onclick="setCalendarView('list')" id="view-mode-list" class="px-3 py-1.5 rounded-lg font-medium text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition">
+                <i data-lucide="list" class="w-3.5 h-3.5"></i> Antrean List
+              </button>
+            </div>
+
+            <!-- Quick Actions -->
+            <button onclick="approveAllPosts()" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow transition">
+              <i data-lucide="check-check" class="w-4 h-4"></i>
+              <span class="hidden sm:inline">Approve Semua</span>
+            </button>
+            <button onclick="simulatePublishNextPost()" class="px-3.5 py-1.5 rounded-xl bg-navy hover:bg-navy-light text-cyanAccent border border-cyanAccent/40 font-bold text-xs flex items-center gap-1.5 transition">
+              <i data-lucide="send" class="w-4 h-4"></i>
+              <span class="hidden sm:inline">Uji Auto-Post</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- VIEW 1: MONTHLY CALENDAR GRID -->
+        <div id="calendar-grid-view" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="grid grid-cols-7 bg-slate-50 border-b border-slate-200 text-center py-2.5 text-xs font-bold text-slate-600 uppercase tracking-wider">
+            <div class="text-rose-600">Minggu</div>
+            <div>Senin</div>
+            <div>Selasa</div>
+            <div>Rabu</div>
+            <div>Kamis</div>
+            <div>Jumat</div>
+            <div class="text-cyan-700">Sabtu</div>
+          </div>
+          <div id="calendar-days-container" class="grid grid-cols-7 divide-x divide-y divide-slate-100">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- VIEW 2: LIST VIEW -->
+        <div id="calendar-list-view" class="hidden space-y-4">
+          <div id="calendar-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================================================
+           TAB 2: UPLOAD HUB (5 DEDICATED THEMATIC CARDS)
+           ======================================================== -->
+      <section id="tab-upload" class="tab-content hidden space-y-6">
+        
+        <!-- Banner Helper -->
+        <div class="bg-gradient-to-r from-navy via-navy-light to-navy p-5 rounded-2xl text-white shadow-lg border border-slate-700/50 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-cyanAccent/20 text-cyanAccent uppercase tracking-wide">Pusat Bahan Otomatis</span>
+              <h2 class="text-xl font-bold">5 Tombol Upload Tematik</h2>
+            </div>
+            <p class="text-sm text-slate-300 max-w-2xl">
+              Drop foto/video ke 5 kategori di bawah. Khusus pilar **Edukasi & Tips**, Anda bisa memilih antara **Upload Media Sendiri** atau **Bikin Konten Instan dengan AI** tanpa perlu punya gambar!
+            </p>
+          </div>
+          <div class="flex items-center gap-2 w-full md:w-auto">
+            <button onclick="loadSampleAssets()" class="w-full md:w-auto px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-cyanAccent border border-cyanAccent/40 flex items-center justify-center gap-2 transition shadow">
+              <i data-lucide="sparkles" class="w-4 h-4"></i>
+              Isi Contoh Foto Demo (1-Click)
+            </button>
+            <button onclick="clearAllUploadedAssets()" class="px-3 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-semibold transition" title="Bersihkan Semua">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- THE 5 DEDICATED UPLOAD CARDS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          <!-- CARD 1: PORTOFOLIO DESAIN -->
+          <div class="bg-white rounded-2xl border-2 border-dashed border-cyan-200 hover:border-cyan-400 p-5 shadow-sm transition-all group flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-10 h-10 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center font-bold text-lg">🎨</div>
+                  <div>
+                    <h3 class="font-bold text-slate-900 text-base">1. Portofolio Desain</h3>
+                    <p class="text-xs text-slate-500">Foto jersey tim jadi, mockup 3D, detail motif sublim, training set</p>
+                  </div>
+                </div>
+                <span id="badge-count-portfolio" class="px-2 py-0.5 rounded-full text-xs font-bold bg-cyan-100 text-cyan-700">0 file</span>
+              </div>
+
+              <div onclick="triggerFileInput('file-input-portfolio')" class="cursor-pointer bg-slate-50 hover:bg-cyan-50/50 rounded-xl p-4 text-center border border-slate-200 transition mb-3">
+                <i data-lucide="image" class="w-7 h-7 mx-auto text-cyan-600 mb-1"></i>
+                <p class="text-xs font-semibold text-slate-700">Pilih / Drop Foto Portofolio Produk</p>
+                <p class="text-[11px] text-slate-400">Jadwal Kalender: Setiap Senin / Selasa (Jam 12:00 WIB)</p>
+              </div>
+              <input type="file" id="file-input-portfolio" multiple accept="image/*" class="hidden" onchange="handleFileSelect(event, 'portfolio')">
+              <div id="preview-portfolio" class="grid grid-cols-4 gap-2 max-h-32 overflow-y-auto scrollbar-thin p-1"></div>
+            </div>
+
+            <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+              <span>Pilar: <strong class="text-cyan-700">Product Showcase</strong></span>
+              <span>Waktu: <span class="text-slate-700">Siang (12:00 WIB)</span></span>
+            </div>
+          </div>
+
+          <!-- CARD 2: PROSES PRODUKSI -->
+          <div class="bg-white rounded-2xl border-2 border-dashed border-indigo-200 hover:border-indigo-400 p-5 shadow-sm transition-all group flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg">🏭</div>
+                  <div>
+                    <h3 class="font-bold text-slate-900 text-base">2. Proses Produksi</h3>
+                    <p class="text-xs text-slate-500">Video printing sublimasi Eropa, cutting otomatis, jahit rantai</p>
+                  </div>
+                </div>
+                <span id="badge-count-production" class="px-2 py-0.5 rounded-full text-xs font-bold bg-indigo-100 text-indigo-700">0 file</span>
+              </div>
+
+              <div onclick="triggerFileInput('file-input-production')" class="cursor-pointer bg-slate-50 hover:bg-indigo-50/50 rounded-xl p-4 text-center border border-slate-200 transition mb-3">
+                <i data-lucide="video" class="w-7 h-7 mx-auto text-indigo-500 mb-1"></i>
+                <p class="text-xs font-semibold text-slate-700">Pilih / Drop Video & Foto Produksi</p>
+                <p class="text-[11px] text-slate-400">Jadwal Kalender: Setiap Rabu (Jam 19:00 - Reels/TikTok)</p>
+              </div>
+              <input type="file" id="file-input-production" multiple accept="image/*,video/*" class="hidden" onchange="handleFileSelect(event, 'production')">
+              <div id="preview-production" class="grid grid-cols-4 gap-2 max-h-32 overflow-y-auto scrollbar-thin p-1"></div>
+            </div>
+
+            <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+              <span>Pilar: <strong class="text-indigo-600">Quality Assurance</strong></span>
+              <span>Waktu: <span class="text-slate-700">Malam (19:00 WIB)</span></span>
+            </div>
+          </div>
+
+          <!-- CARD 3: EDUKASI & TIPS JERSEY (DUAL MODE: UPLOAD MEDIA vs BIKIN DENGAN AI) -->
+          <div class="bg-white rounded-2xl border-2 border-dashed border-purple-300 hover:border-purple-500 p-5 shadow-sm transition-all group flex flex-col justify-between relative bg-gradient-to-b from-purple-50/30 to-white">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-lg">📚</div>
+                  <div>
+                    <h3 class="font-bold text-slate-900 text-base">3. Edukasi & Tips</h3>
+                    <p class="text-xs text-slate-500">Tips bahan, rawat jersey, size chart, teknik sublim</p>
+                  </div>
+                </div>
+                <span id="badge-count-education" class="px-2 py-0.5 rounded-full text-xs font-bold bg-purple-100 text-purple-700">0 file</span>
+              </div>
+
+              <!-- DUAL MODE SWITCHER BUTTONS -->
+              <div class="flex bg-slate-100 p-1 rounded-xl text-xs mb-3 font-semibold">
+                <button onclick="setEducationMode('upload')" id="edu-mode-upload-btn" class="flex-1 py-1.5 rounded-lg text-center transition bg-white text-purple-900 shadow-xs font-bold flex items-center justify-center gap-1">
+                  <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+                  Upload Media Jadi
+                </button>
+                <button onclick="setEducationMode('ai')" id="edu-mode-ai-btn" class="flex-1 py-1.5 rounded-lg text-center transition text-slate-500 hover:text-purple-900 flex items-center justify-center gap-1">
+                  <i data-lucide="sparkles" class="w-3.5 h-3.5 text-purple-600"></i>
+                  Bikin dengan AI
+                </button>
+              </div>
+
+              <!-- MODE A: UPLOAD MEDIA JADI -->
+              <div id="edu-mode-upload-view" class="space-y-2">
+                <div onclick="triggerFileInput('file-input-education')" class="cursor-pointer bg-purple-50/50 hover:bg-purple-100/60 rounded-xl p-3.5 text-center border border-purple-200 transition">
+                  <i data-lucide="image-up" class="w-6 h-6 mx-auto text-purple-600 mb-1"></i>
+                  <p class="text-xs font-bold text-slate-800">Pilih / Drop Media Edukasi</p>
+                  <p class="text-[11px] text-slate-500">Foto tekstur kain, infografis size chart, video tips</p>
+                </div>
+                <input type="file" id="file-input-education" multiple accept="image/*,video/*" class="hidden" onchange="handleFileSelect(event, 'education')">
+                <div id="preview-education" class="grid grid-cols-4 gap-2 max-h-24 overflow-y-auto scrollbar-thin p-1"></div>
+              </div>
+
+              <!-- MODE B: BIKIN DENGAN AI (INSTAN TANPA PERLU GAMBAR) -->
+              <div id="edu-mode-ai-view" class="hidden space-y-2.5 bg-purple-50/60 p-3 rounded-xl border border-purple-200">
+                <div>
+                  <label class="block text-[11px] font-bold text-purple-900 mb-1">Pilih Topik Edukasi AI:</label>
+                  <select id="edu-ai-topic" class="w-full text-xs p-2 rounded-lg border border-purple-200 bg-white focus:outline-none focus:border-purple-500">
+                    <option value="rawat-jersey">👕 Cara Merawat & Mencuci Jersey Sublimasi Agar Awet</option>
+                    <option value="tips-bahan">🧵 Mengenal Bahan Dry-Fit Waffle vs Milano (Adem & Ringan)</option>
+                    <option value="size-chart">📏 Panduan Memilih Size Chart Jersey (S - XXL Dewasa)</option>
+                    <option value="sublim-vs-dtf">⚡ Keunggulan Full Sublimasi Eropa Dibanding Sablon Biasa</option>
+                    <option value="tips-desain">🎨 Tips Kombinasi Warna Jersey Futsal Biar Gagah di Lapangan</option>
+                  </select>
+                </div>
+
+                <div class="flex items-center justify-between pt-1">
+                  <span class="text-[10px] text-purple-700 font-medium">✨ Otomatis buat konten carousel & caption</span>
+                  <button onclick="generateEducationWithAi()" class="px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs flex items-center gap-1 shadow-xs transition">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                    Generate Konten AI
+                  </button>
+                </div>
+
+                <!-- Preview Box of Generated AI Education -->
+                <div id="edu-ai-generated-preview" class="hidden bg-white p-2.5 rounded-lg border border-purple-200 text-[11px] space-y-1.5 font-sans">
+                  <div class="flex items-center justify-between text-purple-900 font-bold border-b border-purple-100 pb-1">
+                    <span id="edu-ai-preview-title">Judul Edukasi</span>
+                    <span class="text-[9px] bg-purple-100 text-purple-800 px-1.5 py-0.2 rounded font-extrabold uppercase">Siap Plot</span>
+                  </div>
+                  <p id="edu-ai-preview-text" class="text-slate-600 line-clamp-2 leading-tight"></p>
+                  <button onclick="addAiEducationToQueue()" class="w-full py-1.5 rounded-lg bg-navy hover:bg-navy-light text-cyanAccent font-bold text-xs flex items-center justify-center gap-1 transition mt-1">
+                    <i data-lucide="plus" class="w-3 h-3"></i> Tambahkan ke Antrean Kalender
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+              <span>Pilar: <strong class="text-purple-700">Knowledge & Tips</strong></span>
+              <span>Waktu: <span class="text-slate-700">Kamis (16:00 WIB)</span></span>
+            </div>
+          </div>
+
+          <!-- CARD 4: PENGIRIMAN & PACKING -->
+          <div class="bg-white rounded-2xl border-2 border-dashed border-amber-200 hover:border-amber-400 p-5 shadow-sm transition-all group flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-lg">📦</div>
+                  <div>
+                    <h3 class="font-bold text-slate-900 text-base">4. Pengiriman & Packing</h3>
+                    <p class="text-xs text-slate-500">Tumpukan paket plastik tebal, resi kargo J&T, Indah Cargo, Lion</p>
+                  </div>
+                </div>
+                <span id="badge-count-shipping" class="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-700">0 file</span>
+              </div>
+
+              <div onclick="triggerFileInput('file-input-shipping')" class="cursor-pointer bg-slate-50 hover:bg-amber-50/50 rounded-xl p-4 text-center border border-slate-200 transition mb-3">
+                <i data-lucide="package-check" class="w-7 h-7 mx-auto text-amber-600 mb-1"></i>
+                <p class="text-xs font-semibold text-slate-700">Pilih / Drop Foto Bukti Kirim</p>
+                <p class="text-[11px] text-slate-400">Jadwal Kalender: Setiap Jumat (Jam 15:00 - Bukti Amanah)</p>
+              </div>
+              <input type="file" id="file-input-shipping" multiple accept="image/*" class="hidden" onchange="handleFileSelect(event, 'shipping')">
+              <div id="preview-shipping" class="grid grid-cols-4 gap-2 max-h-32 overflow-y-auto scrollbar-thin p-1"></div>
+            </div>
+
+            <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+              <span>Pilar: <strong class="text-amber-700">Social Proof & Trust</strong></span>
+              <span>Waktu: <span class="text-slate-700">Sore (15:00 WIB)</span></span>
+            </div>
+          </div>
+
+          <!-- CARD 5: TESTIMONI CUSTOMER -->
+          <div class="bg-white rounded-2xl border-2 border-dashed border-emerald-200 hover:border-emerald-400 p-5 shadow-sm transition-all group flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg">🏆</div>
+                  <div>
+                    <h3 class="font-bold text-slate-900 text-base">5. Testimoni Customer</h3>
+                    <p class="text-xs text-slate-500">Foto tim customer pakai jersey saat tanding di lapangan futsal/bola</p>
+                  </div>
+                </div>
+                <span id="badge-count-testimonial" class="px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">0 file</span>
+              </div>
+
+              <div onclick="triggerFileInput('file-input-testimonial')" class="cursor-pointer bg-slate-50 hover:bg-emerald-50/50 rounded-xl p-4 text-center border border-slate-200 transition mb-3">
+                <i data-lucide="trophy" class="w-7 h-7 mx-auto text-emerald-600 mb-1"></i>
+                <p class="text-xs font-semibold text-slate-700">Pilih / Drop Foto Aksi Customer</p>
+                <p class="text-[11px] text-slate-400">Jadwal Kalender: Setiap Sabtu / Minggu (Jam 10:00 / 19:00 WIB)</p>
+              </div>
+              <input type="file" id="file-input-testimonial" multiple accept="image/*" class="hidden" onchange="handleFileSelect(event, 'testimonial')">
+              <div id="preview-testimonial" class="grid grid-cols-4 gap-2 max-h-32 overflow-y-auto scrollbar-thin p-1"></div>
+            </div>
+
+            <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+              <span>Pilar: <strong class="text-emerald-700">Customer Pride</strong></span>
+              <span>Waktu: <span class="text-slate-700">Weekend Game</span></span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Bottom Controls -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+          <div class="flex-1 w-full">
+            <label class="block text-xs font-semibold text-slate-700 mb-1">
+              📝 Catatan Khusus untuk AI (Opsional)
+            </label>
+            <input type="text" id="global-upload-notes" placeholder="Contoh: 'Ini pesanan tim Bhayangkara Malang, bahan Dryfit Waffle, kerah V-neck'" class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:border-cyan-500 transition">
+          </div>
+
+          <div class="flex items-center gap-3 w-full md:w-auto self-end">
+            <div class="text-right hidden sm:block">
+              <p class="text-xs font-bold text-slate-800" id="total-assets-count">0 file terpilih</p>
+              <p class="text-[11px] text-slate-500">Siap diplot ke kalender bulanan</p>
+            </div>
+            <button onclick="startAutoPilotProcessing()" id="btn-start-process" class="w-full md:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-navy via-navy-light to-cyan-600 hover:opacity-95 text-white font-bold text-sm shadow-md flex items-center justify-center gap-2 transition disabled:opacity-50 disabled:cursor-not-allowed">
+              <i data-lucide="play" class="w-4 h-4 fill-white"></i>
+              PROSES & PLOT KE KALENDER
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================================================
+           TAB 3: AI PROMPT STUDIO
+           ======================================================== -->
+      <section id="tab-studio" class="tab-content hidden space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-1 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
+              <i data-lucide="bot" class="w-5 h-5 text-cyan-600"></i>
+              <h3 class="font-bold text-slate-900 text-sm">Generator Konten Dadakan</h3>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Tema / Topik Konten</label>
+              <select id="studio-topic-type" class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-white">
+                <option value="carousel-edukasi">📚 Carousel Edukasi: "5 Tips Pilih Bahan Jersey"</option>
+                <option value="rawat-jersey">📚 Tips Edukasi: "Cara Cuci Jersey Sublimasi Agar Awet"</option>
+                <option value="promo-turnamen">🏆 Promo Khusus Tim Futsal / Turnamen</option>
+                <option value="keunggulan-mesin">🏭 Edukasi: Keunggulan Mesin Printing Eropa</option>
+                <option value="size-chart">📏 Panduan Size Chart & Tips Ukuran Jersey</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Gaya Bahasa (Tone of Voice)</label>
+              <select id="studio-tone" class="w-full text-xs p-2.5 rounded-xl border border-slate-300 bg-white">
+                <option value="sporty">Sporty & Hype (Anak Futsal / Komunitas)</option>
+                <option value="edukatif">Informatif & Bermanfaat (Edukasi Pelanggan)</option>
+                <option value="b2b">Formal & Rapi (Instansi, Kepolisian, Korporat)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Highlight Tambahan</label>
+              <textarea id="studio-custom-prompt" rows="3" placeholder="Contoh: 'Tegaskan minimal order cuma 6 pcs dan gratis desain tanpa batas revisi!'" class="w-full text-xs p-2.5 rounded-xl border border-slate-300"></textarea>
+            </div>
+
+            <button onclick="generateCustomAiPost()" class="w-full py-2.5 rounded-xl bg-navy hover:bg-navy-light text-cyanAccent font-bold text-xs flex items-center justify-center gap-2 transition">
+              <i data-lucide="sparkles" class="w-4 h-4"></i>
+              GENERATE SEKARANG
+            </button>
+          </div>
+
+          <div class="lg:col-span-2 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+            <div class="space-y-4">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="file-text" class="w-5 h-5 text-indigo-600"></i>
+                  <h3 class="font-bold text-slate-900 text-sm">Hasil Output AI Copywriter</h3>
+                </div>
+                <button onclick="copyToClipboard('studio-result-text')" class="text-xs text-indigo-600 hover:text-indigo-800 font-semibold flex items-center gap-1">
+                  <i data-lucide="copy" class="w-3.5 h-3.5"></i> Salin Teks
+                </button>
+              </div>
+
+              <div id="studio-result-box" class="bg-slate-50 p-4 rounded-xl border border-slate-200 min-h-[260px] font-mono text-xs text-slate-700 whitespace-pre-wrap leading-relaxed overflow-y-auto max-h-96">
+Klik tombol "GENERATE SEKARANG" di samping untuk membuat materi konten secara instan dengan agent Copywriter TEESTACTICAL.
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+              <span class="text-xs text-slate-500">CTA WA Default: <code class="bg-slate-100 px-1 py-0.5 rounded text-slate-700">+62895423467070</code></span>
+              <button onclick="pushStudioResultToCalendar()" class="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white font-semibold text-xs flex items-center gap-1.5 transition">
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                Masukkan ke Kalender
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           TAB 4: PERFORMA & LAPORAN AI
+           ======================================================== -->
+      <section id="tab-analytics" class="tab-content hidden space-y-6">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+            <p class="text-xs text-slate-500 font-medium">Total Konten Terjadwal</p>
+            <p class="text-2xl font-black text-navy mt-1" id="metric-total-scheduled">0</p>
+            <p class="text-[11px] text-emerald-600 mt-1 flex items-center gap-1">
+              <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> Konsistensi 100%
+            </p>
+          </div>
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+            <p class="text-xs text-slate-500 font-medium">Estimasi Reach Organik</p>
+            <p class="text-2xl font-black text-indigo-600 mt-1">12,450</p>
+            <p class="text-[11px] text-slate-400 mt-1">Instagram + TikTok + FB</p>
+          </div>
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+            <p class="text-xs text-slate-500 font-medium">Pilar Paling Banyak Disukai</p>
+            <p class="text-2xl font-black text-purple-600 mt-1">Edukasi & Produksi</p>
+            <p class="text-[11px] text-slate-400 mt-1">Tips rawat kain & mesin sublim</p>
+          </div>
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+            <p class="text-xs text-slate-500 font-medium">Konversi Chat WhatsApp</p>
+            <p class="text-2xl font-black text-emerald-600 mt-1">84 Order</p>
+            <p class="text-[11px] text-emerald-600 mt-1 flex items-center gap-1">
+              <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> Dijawab Manusia Langsung
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-br from-indigo-900 to-navy text-white p-6 rounded-2xl shadow-md border border-indigo-700/50 space-y-4">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-cyanAccent/20 text-cyanAccent flex items-center justify-center font-bold">
+              <i data-lucide="sparkles" class="w-4 h-4"></i>
+            </div>
+            <h3 class="font-bold text-base">Rekomendasi Strategis dari AI Agent Analytics</h3>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div class="bg-white/10 p-4 rounded-xl border border-white/10 space-y-1.5">
+              <span class="text-purple-300 font-bold">1. Konten Edukasi Meningkatkan Saves</span>
+              <p class="text-slate-200">
+                Postingan edukasi "Cara Merawat Jersey Sublimasi" dan "Tips Memilih Bahan Dryfit" mendapat jumlah Save & Share tertinggi karena audiens menyimpannya sebagai panduan.
+              </p>
+            </div>
+            <div class="bg-white/10 p-4 rounded-xl border border-white/10 space-y-1.5">
+              <span class="text-amber-300 font-bold">2. Bukti Pengiriman Hari Jumat</span>
+              <p class="text-slate-200">
+                Postingan foto packing pengiriman antar-pulau pada hari Jumat meningkatkan rasa aman customer baru hingga 45% sebelum mentransfer DP.
+              </p>
+            </div>
+            <div class="bg-white/10 p-4 rounded-xl border border-white/10 space-y-1.5">
+              <span class="text-emerald-300 font-bold">3. Foto Tim Bertanding di Weekend</span>
+              <p class="text-slate-200">
+                Customer paling terkesan saat melihat jersey dipakai langsung di lapangan futsal/lapangan bola saat turnamen di akhir pekan.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ========================================================
+       MODALS: DETAIL POST, PROCESSING, API SETTINGS
+       ======================================================== -->
+
+  <!-- DETAIL POST & LIVE SOCIAL PREVIEW MODAL -->
+  <div id="modal-edit-post" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-3xl max-w-4xl w-full shadow-2xl overflow-hidden max-h-[92vh] flex flex-col">
+      <div class="p-4 sm:px-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+        <div class="flex items-center gap-2">
+          <span id="edit-category-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-100 text-indigo-700">Kategori</span>
+          <h3 class="font-bold text-slate-900 text-sm sm:text-base">Detail Konten & Live Preview Medsos</h3>
+        </div>
+        <button onclick="closeEditModal()" class="text-slate-400 hover:text-slate-600 p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-4 sm:p-6 overflow-y-auto scrollbar-thin grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
+        <!-- Realistic Phone Preview -->
+        <div class="bg-slate-100 p-4 rounded-2xl flex flex-col items-center justify-center">
+          <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Simulasi Tampilan Instagram</p>
+          <div class="w-full max-w-xs bg-white rounded-2xl border border-slate-300 shadow-md overflow-hidden text-xs">
+            <div class="p-2.5 border-b border-slate-100 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-full bg-navy p-0.5 overflow-hidden">
+                  <img src="assets/images/logo-teestactical.png" class="w-full h-full object-contain">
+                </div>
+                <div>
+                  <p class="font-bold text-slate-900 text-[11px]">teestactical</p>
+                  <p class="text-[9px] text-slate-400">Malang, Jawa Timur</p>
+                </div>
+              </div>
+              <span class="text-slate-400 font-bold tracking-widest text-xs">•••</span>
+            </div>
+
+            <div class="aspect-square bg-slate-900 overflow-hidden flex items-center justify-center">
+              <img id="ig-preview-img" src="" class="w-full h-full object-cover">
+            </div>
+
+            <div class="p-2.5 pb-1 flex items-center justify-between text-slate-700">
+              <div class="flex items-center gap-3">
+                <i data-lucide="heart" class="w-4 h-4 text-rose-500 fill-rose-500"></i>
+                <i data-lucide="message-circle" class="w-4 h-4"></i>
+                <i data-lucide="send" class="w-4 h-4"></i>
+              </div>
+              <i data-lucide="bookmark" class="w-4 h-4"></i>
+            </div>
+
+            <div class="px-2.5 pb-3 pt-1 space-y-1">
+              <p class="font-bold text-[10px] text-slate-800">124 suka</p>
+              <p class="text-[10px] text-slate-700 line-clamp-4 leading-snug">
+                <strong class="font-bold text-slate-900">teestactical</strong> <span id="ig-preview-caption">Caption preview...</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit Form -->
+        <div class="space-y-4 flex flex-col justify-between">
+          <div class="space-y-3">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Target Tanggal & Jam Tayang</label>
+              <div class="grid grid-cols-2 gap-2">
+                <input type="date" id="edit-post-date" class="text-xs p-2.5 rounded-xl border border-slate-300 w-full font-medium">
+                <input type="time" id="edit-post-time" class="text-xs p-2.5 rounded-xl border border-slate-300 w-full font-medium">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Target Platform Medsos</label>
+              <select id="edit-post-platform" class="text-xs p-2 rounded-xl border border-slate-300 w-full bg-white">
+                <option value="Instagram Feed & Facebook">Instagram Feed & Facebook</option>
+                <option value="Instagram Reels & TikTok">Instagram Reels & TikTok</option>
+                <option value="Instagram Carousel & Facebook">Instagram Carousel & Facebook</option>
+                <option value="Instagram Feed & Story">Instagram Feed & Story</option>
+              </select>
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <label class="block text-xs font-semibold text-slate-700">Caption & Hook (AI Generated)</label>
+                <button onclick="regenerateCaptionInModal()" class="text-[11px] text-cyan-600 hover:underline flex items-center gap-1 font-bold">
+                  <i data-lucide="refresh-cw" class="w-3 h-3"></i> Tulis Ulang AI
+                </button>
+              </div>
+              <textarea id="edit-post-caption" rows="7" oninput="syncIgPreviewText()" class="w-full text-xs p-3 rounded-xl border border-slate-300 font-sans focus:outline-none focus:border-cyan-500 leading-relaxed"></textarea>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+            <button onclick="deleteCurrentPost()" class="text-xs text-rose-600 hover:text-rose-800 font-semibold flex items-center gap-1">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Hapus Post
+            </button>
+            <div class="flex items-center gap-2">
+              <button onclick="closeEditModal()" class="px-3.5 py-2 rounded-xl border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-50">Batal</button>
+              <button onclick="saveCurrentPostChanges()" class="px-4 py-2 rounded-xl bg-navy text-cyanAccent text-xs font-bold hover:bg-navy-light shadow">Simpan Jadwal</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROCESSING MODAL -->
+  <div id="modal-processing" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl text-center space-y-4">
+      <div class="w-16 h-16 rounded-full bg-navy/10 text-navy flex items-center justify-center mx-auto relative">
+        <i data-lucide="loader-2" class="w-8 h-8 animate-spin text-cyan-600"></i>
+      </div>
+      <div>
+        <h3 class="text-lg font-bold text-slate-900">AI Agent Sedang Bekerja...</h3>
+        <p class="text-xs text-slate-500 mt-1">Menyusun matriks jadwal 5 pilar dan plotting ke kalender</p>
+      </div>
+      <div class="bg-slate-50 rounded-2xl p-4 text-left space-y-2.5 text-xs text-slate-600">
+        <div class="flex items-center gap-2">
+          <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500"></i>
+          <span>Menganalisis jenis foto/video dari 5 kategori pilar...</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500"></i>
+          <span>Memasukkan ke slot hari kosong di kalender...</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500"></i>
+          <span>Meracik hook edukatif, hashtag & WhatsApp resmi...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- API SETTINGS MODAL -->
+  <div id="modal-api-settings" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2">
+          <i data-lucide="key" class="w-5 h-5 text-cyan-600"></i>
+          <h3 class="font-bold text-slate-900 text-base">Pengaturan AI Engine</h3>
+        </div>
+        <button onclick="closeApiModal()" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-600 leading-relaxed">
+        Sistem ini dilengkapi <strong>Smart Local Engine</strong> bawaan siap pakai tanpa biaya token. Anda juga bisa memasukkan API Key Google Gemini Flash jika ingin integrasi live online.
+      </p>
+
+      <div>
+        <label class="block text-xs font-semibold text-slate-700 mb-1">Google Gemini API Key (Opsional)</label>
+        <input type="password" id="input-gemini-key" placeholder="AIzaSy..." class="w-full text-xs p-2.5 rounded-xl border border-slate-300 focus:outline-none focus:border-cyan-500">
+      </div>
+
+      <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs text-slate-600">
+        <p class="font-semibold text-slate-800">CTA WhatsApp TEESTACTICAL:</p>
+        <p class="text-indigo-600 font-bold mt-0.5">+62895423467070 (Malang - Jawa Timur)</p>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-2">
+        <button onclick="closeApiModal()" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 text-xs font-semibold">Tutup</button>
+        <button onclick="saveApiSettings()" class="px-4 py-2 rounded-xl bg-navy text-cyanAccent text-xs font-bold hover:bg-navy-light">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 bg-navy text-white px-4 py-3 rounded-2xl shadow-xl border border-cyanAccent/40 text-xs flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300">
+    <i data-lucide="info" class="w-4 h-4 text-cyanAccent"></i>
+    <span id="toast-message">Notifikasi</span>
+  </div>
+
+  <!-- SCRIPT LOGIC -->
+  <script>
+    // State Store with 5 Categories
+    const state = {
+      activeTab: 'dashboard',
+      educationMode: 'upload', // 'upload' or 'ai'
+      tempGeneratedAiEdu: null,
+      currentYear: 2026,
+      currentMonth: 9, // 0-indexed: 9 = Oktober
+      calendarViewMode: 'grid',
+      uploadedAssets: {
+        portfolio: [],
+        production: [],
+        education: [],
+        shipping: [],
+        testimonial: []
+      },
+      scheduledPosts: [],
+      currentEditingIndex: null,
+      geminiApiKey: localStorage.getItem('teestactical_gemini_key') || ''
+    };
+
+    const MONTH_NAMES = [
+      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    ];
+
+    // Category styling & metadata (5 Pillars)
+    const categoryMeta = {
+      portfolio: { name: 'Portofolio', bg: 'bg-cyan-500', text: 'text-cyan-800', lightBg: 'bg-cyan-50', border: 'border-cyan-200' },
+      production: { name: 'Produksi', bg: 'bg-indigo-600', text: 'text-indigo-800', lightBg: 'bg-indigo-50', border: 'border-indigo-200' },
+      education: { name: 'Edukasi', bg: 'bg-purple-600', text: 'text-purple-800', lightBg: 'bg-purple-50', border: 'border-purple-200' },
+      shipping: { name: 'Pengiriman', bg: 'bg-amber-500', text: 'text-amber-800', lightBg: 'bg-amber-50', border: 'border-amber-200' },
+      testimonial: { name: 'Testimoni', bg: 'bg-emerald-600', text: 'text-emerald-800', lightBg: 'bg-emerald-50', border: 'border-emerald-200' }
+    };
+
+    // Pre-loaded Demo Assets
+    const sampleDemos = {
+      portfolio: [
+        { name: 'training-set-arwana-fc.jpg', type: 'image', preview: 'assets/images/training-set-featured.jpg', label: 'Training Set Eksklusif Arwana FC' },
+        { name: 'jersey-tactical-bdu-komunitas.jpg', type: 'image', preview: 'assets/images/logo-teestactical.png', label: 'Jersey BDU Tactical Malang' }
+      ],
+      production: [
+        { name: 'video-sublimasi-eropa.mp4', type: 'video', preview: 'assets/images/training-set-featured.jpg', label: 'Proses Print Tinta Sublim Eropa' },
+        { name: 'cutting-otomatis-pola.jpg', type: 'image', preview: 'assets/images/jersey-measure.svg', label: 'Mesin Cutting Otomatis Presisi' }
+      ],
+      education: [
+        { name: 'tips-rawat-jersey-sublimasi.jpg', type: 'image', preview: 'assets/images/jersey-measure.svg', label: '5 Cara Rawat Jersey Sublim Biar Awet' },
+        { name: 'panduan-size-chart-dewasa.png', type: 'image', preview: 'assets/images/size-chart-dewasa.png', label: 'Tips Pilih Ukuran Jersey S-XXL' }
+      ],
+      shipping: [
+        { name: 'pengiriman-indah-cargo-sumatra.jpg', type: 'image', preview: 'assets/images/training-set-featured.jpg', label: 'Kloter 120 Pcs ke Palembang' }
+      ],
+      testimonial: [
+        { name: 'tim-futsal-juara-turnamen.jpg', type: 'image', preview: 'assets/images/training-set-featured.jpg', label: 'Foto Juara 1 Turnamen Futsal Cup' }
+      ]
+    };
+
+    // On Load
+    document.addEventListener('DOMContentLoaded', () => {
+      const now = new Date();
+      state.currentYear = now.getFullYear();
+      state.currentMonth = now.getMonth();
+
+      const updateClock = () => {
+        const d = new Date();
+        document.getElementById('live-clock-badge').textContent = d.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric', month: 'short' }) + ' • ' + d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+        document.getElementById('hero-today-date').textContent = d.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      };
+      updateClock();
+      setInterval(updateClock, 30000);
+
+      loadSavedSchedules();
+
+      if (state.scheduledPosts.length === 0) {
+        state.uploadedAssets = JSON.parse(JSON.stringify(sampleDemos));
+        generateSchedulesFromAssets('');
+      }
+
+      updateCounters();
+      renderDashboard();
+      renderMonthlyCalendar();
+      renderListView();
+      lucide.createIcons();
+    });
+
+    // ==========================================
+    // DUAL-MODE EDUKASI SWITCHER
+    // ==========================================
+    function setEducationMode(mode) {
+      state.educationMode = mode;
+      const btnUpload = document.getElementById('edu-mode-upload-btn');
+      const btnAi = document.getElementById('edu-mode-ai-btn');
+      const viewUpload = document.getElementById('edu-mode-upload-view');
+      const viewAi = document.getElementById('edu-mode-ai-view');
+
+      if (mode === 'upload') {
+        btnUpload.className = 'flex-1 py-1.5 rounded-lg text-center transition bg-white text-purple-900 shadow-xs font-bold flex items-center justify-center gap-1';
+        btnAi.className = 'flex-1 py-1.5 rounded-lg text-center transition text-slate-500 hover:text-purple-900 flex items-center justify-center gap-1';
+        viewUpload.classList.remove('hidden');
+        viewAi.classList.add('hidden');
+      } else {
+        btnAi.className = 'flex-1 py-1.5 rounded-lg text-center transition bg-purple-600 text-white shadow-xs font-bold flex items-center justify-center gap-1';
+        btnUpload.className = 'flex-1 py-1.5 rounded-lg text-center transition text-slate-500 hover:text-purple-900 flex items-center justify-center gap-1';
+        viewUpload.classList.add('hidden');
+        viewAi.classList.remove('hidden');
+      }
+      lucide.createIcons();
+    }
+
+    function generateEducationWithAi() {
+      const topic = document.getElementById('edu-ai-topic').value;
+      const previewBox = document.getElementById('edu-ai-generated-preview');
+      const titleEl = document.getElementById('edu-ai-preview-title');
+      const textEl = document.getElementById('edu-ai-preview-text');
+
+      let postTitle = '';
+      let postCaption = '';
+      let postThumb = 'assets/images/jersey-measure.svg';
+
+      if (topic === 'rawat-jersey') {
+        postTitle = 'Tips Rawat Jersey Sublimasi';
+        postCaption = `👕 5 TIPS MERAWAT JERSEY SUBLIMASI AGAR TETAP TAJAM & AWET!\n\n1. Selalu balik baju sebelum dicuci (posisi dalam di luar).\n2. Gunakan air suhu normal, hindari air panas.\n3. Jangan pakai pemutih pakaian berkonsentrasi keras.\n4. Jemur di tempat teduh dengan angin sepoi.\n5. Setrika dengan panas sedang dari sisi dalam kain.\n\nSimpan panduan ini agar seragam tim kesayanganmu selalu tampak baru di lapangan! 🔥\nKonsultasi gratis via WhatsApp: +62895423467070`;
+      } else if (topic === 'tips-bahan') {
+        postTitle = 'Edukasi: Dry-Fit Waffle vs Milano';
+        postCaption = `🧵 BEDANYA DRY-FIT WAFFLE VS MILANO UNTUK JERSEY FUTSAL!\n\n• Dry-Fit Waffle: Punya pori kotak-kotak bertekstur, sirkulasi udara lebih cepat keluar sehingga sangat sejuk saat lari cepat.\n• Dry-Fit Milano: Permukaan lebih halus & licin, warna gradasi cetakan tampak lebih mengkilap dan elegan.\n\nKedua bahan ini tersedia lengkap di TEESTACTICAL dengan gramasi pas dan jahitan rantai standar distro.\nKonsultasi bahan tim kamu via WhatsApp: +62895423467070 📲`;
+      } else if (topic === 'size-chart') {
+        postTitle = 'Panduan Size Chart Jersey Dewasa';
+        postThumb = 'assets/images/size-chart-dewasa.png';
+        postCaption = `📏 PANDUAN PILIH UKURAN JERSEY BIAR GAK SALAH SIZE!\n\n• Size S: Panjang 69cm / Lebar 49cm\n• Size M: Panjang 71cm / Lebar 50cm\n• Size L: Panjang 73cm / Lebar 52cm\n• Size XL: Panjang 76cm / Lebar 54cm\n• Size XXL: Panjang 77cm / Lebar 56cm\n\nPastikan tim kamu ukur lingkar dada terlebih dahulu ya! Butuh size anak? Kami juga sediakan size XS-XL anak.\nChat WhatsApp: +62895423467070 📲`;
+      } else if (topic === 'sublim-vs-dtf') {
+        postTitle = 'Keunggulan Full Sublimasi Eropa';
+        postCaption = `⚡ KENAPA HARUS FULL SUBLIMASI TINTA EROPA?\n\nBerbeda dengan sablon manual atau transfer film yang terasa tebal dan panas, teknologi Full Sublimation TEESTACTICAL:\n✅ Tinta meresap menyatu ke serat kain\n✅ Pori-pori kain tetap bernapas (adem dipakai)\n✅ Tidak akan pecah, retak, atau luntur saat dicuci\n\nBuktikan sendiri di workshop kami di Malang - Jawa Timur! Chat admin: +62895423467070 📲`;
+      } else {
+        postTitle = 'Tips Desain & Warna Jersey Futsal';
+        postCaption = `🎨 TIPS KOMBINASI WARNA JERSEY AGAR TAMPIL GAGAH!\n\n1. Gunakan 1 warna dominan gelap (Navy/Hitam) dipadu aksen terang (Cyan/Emas).\n2. Hindari lebih dari 3 warna kontras agar tidak ramai berlebihan.\n3. Perhatikan kontras warna nomor punggung agar terbaca wasit dari kejauhan.\n\nBingung soal desain? Di TEESTACTICAL, Desain Dibuatkan GRATIS sampai tim kamu puas! Chat: +62895423467070 📲`;
+      }
+
+      state.tempGeneratedAiEdu = {
+        title: postTitle,
+        caption: postCaption,
+        media: postThumb,
+        type: 'image'
+      };
+
+      titleEl.textContent = postTitle;
+      textEl.textContent = postCaption;
+      previewBox.classList.remove('hidden');
+      showToast('Konten edukasi berhasil diracik oleh AI!');
+      lucide.createIcons();
+    }
+
+    function addAiEducationToQueue() {
+      if (!state.tempGeneratedAiEdu) return;
+
+      // Add to uploadedAssets as a virtual item
+      state.uploadedAssets.education.push({
+        name: state.tempGeneratedAiEdu.title,
+        type: 'image',
+        preview: state.tempGeneratedAiEdu.media,
+        label: state.tempGeneratedAiEdu.title,
+        customCaption: state.tempGeneratedAiEdu.caption
+      });
+
+      renderCategoryPreview('education');
+      updateCounters();
+      document.getElementById('edu-ai-generated-preview').classList.add('hidden');
+      showToast(`"${state.tempGeneratedAiEdu.title}" berhasil ditambahkan ke antrean! Siap diproses.`);
+    }
+
+    // ==========================================
+    // SIDEBAR TAB SWITCHING
+    // ==========================================
+    const tabTitles = {
+      dashboard: 'Dashboard Ringkasan Hari Ini',
+      calendar: 'Kalender Konten Interaktif (Monthly Grid)',
+      upload: 'Upload Hub (5 Tombol Tematik Auto-Pilot)',
+      studio: 'AI Prompt Studio & Generator',
+      analytics: 'Laporan Performa & Rekomendasi AI'
+    };
+
+    function switchTab(tabId) {
+      state.activeTab = tabId;
+
+      document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.classList.remove('active', 'bg-cyanAccent/10', 'text-cyanAccent', 'border', 'border-cyanAccent/30');
+        btn.classList.add('text-slate-300');
+      });
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+
+      const activeBtn = document.getElementById(`nav-btn-${tabId}`);
+      const activeContent = document.getElementById(`tab-${tabId}`);
+
+      if (activeBtn) {
+        activeBtn.classList.add('active', 'bg-cyanAccent/10', 'text-cyanAccent', 'border', 'border-cyanAccent/30');
+        activeBtn.classList.remove('text-slate-300');
+      }
+      if (activeContent) {
+        activeContent.classList.remove('hidden');
+      }
+
+      document.getElementById('current-view-title').textContent = tabTitles[tabId] || 'Dashboard';
+
+      if (tabId === 'dashboard') renderDashboard();
+      if (tabId === 'calendar') {
+        renderMonthlyCalendar();
+        renderListView();
+      }
+
+      lucide.createIcons();
+    }
+
+    // ==========================================
+    // DASHBOARD ENGINE (5 PILLARS BALANCE)
+    // ==========================================
+    function renderDashboard() {
+      const today = new Date();
+      const todayStr = today.toISOString().split('T')[0];
+
+      const todayPosts = state.scheduledPosts.filter(p => p.date === todayStr);
+      
+      const nextWeek = new Date();
+      nextWeek.setDate(today.getDate() + 7);
+      const nextWeekStr = nextWeek.toISOString().split('T')[0];
+      const weekPosts = state.scheduledPosts.filter(p => p.date >= todayStr && p.date <= nextWeekStr);
+
+      document.getElementById('dash-stat-today').textContent = todayPosts.length;
+      document.getElementById('dash-stat-week').textContent = weekPosts.length;
+      document.getElementById('dash-stat-total').textContent = state.scheduledPosts.length;
+      document.getElementById('dash-today-count-text').textContent = `${todayPosts.length} postingan`;
+
+      const todayContainer = document.getElementById('dash-today-posts-list');
+      todayContainer.innerHTML = '';
+
+      if (todayPosts.length === 0) {
+        todayContainer.innerHTML = `
+          <div class="text-center py-8 bg-slate-50 rounded-2xl border border-dashed border-slate-300">
+            <i data-lucide="check-circle" class="w-8 h-8 mx-auto text-emerald-500 mb-2"></i>
+            <p class="text-xs font-bold text-slate-700">Tidak ada jadwal posting untuk hari ini</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">Postingan berikutnya dijadwalkan pada hari-hari mendatang.</p>
+            <button onclick="switchTab('upload')" class="mt-3 px-3 py-1.5 rounded-xl bg-navy text-cyanAccent text-xs font-bold inline-flex items-center gap-1.5 shadow-xs">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> Jadwalkan Postingan Sekarang
+            </button>
+          </div>
+        `;
+      } else {
+        todayPosts.forEach(post => {
+          const meta = categoryMeta[post.category] || categoryMeta.portfolio;
+          const card = document.createElement('div');
+          card.className = 'p-3 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-slate-50 flex items-center justify-between gap-3 transition';
+          card.innerHTML = `
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="w-12 h-12 rounded-xl bg-slate-200 overflow-hidden flex-shrink-0">
+                <img src="${post.media}" class="w-full h-full object-cover">
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2">
+                  <span class="px-2 py-0.2 rounded-full text-[9px] font-extrabold ${meta.bg} text-white uppercase">${post.category}</span>
+                  <span class="text-xs font-bold text-navy flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3 text-cyan-600"></i> ${post.time} WIB</span>
+                  <span class="text-[10px] text-slate-400 hidden sm:inline">• ${post.platform}</span>
+                </div>
+                <h4 class="font-bold text-slate-900 text-xs truncate mt-0.5">${post.title}</h4>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 flex-shrink-0">
+              <button onclick="openEditModalById('${post.id}')" class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 text-xs font-bold shadow-xs">
+                Preview
+              </button>
+              <button onclick="simulatePublishNextPost()" class="px-3 py-1.5 rounded-xl bg-navy hover:bg-navy-light text-cyanAccent text-xs font-bold shadow-xs flex items-center gap-1">
+                <i data-lucide="send" class="w-3 h-3"></i> Post
+              </button>
+            </div>
+          `;
+          todayContainer.appendChild(card);
+        });
+      }
+
+      const total = state.scheduledPosts.length || 1;
+      const countByCat = { portfolio: 0, production: 0, education: 0, shipping: 0, testimonial: 0 };
+      state.scheduledPosts.forEach(p => {
+        if (countByCat[p.category] !== undefined) countByCat[p.category]++;
+      });
+
+      ['portfolio', 'production', 'education', 'shipping', 'testimonial'].forEach(cat => {
+        const count = countByCat[cat];
+        const pct = Math.round((count / total) * 100);
+        document.getElementById(`dash-bar-${cat}-count`).textContent = `${count} post (${pct}%)`;
+        document.getElementById(`dash-bar-${cat}`).style.width = `${pct}%`;
+      });
+
+      lucide.createIcons();
+    }
+
+    // ==========================================
+    // MONTHLY CALENDAR GRID ENGINE
+    // ==========================================
+    function renderMonthlyCalendar() {
+      const container = document.getElementById('calendar-days-container');
+      const monthYearLabel = document.getElementById('calendar-month-year-label');
+      
+      monthYearLabel.textContent = `${MONTH_NAMES[state.currentMonth]} ${state.currentYear}`;
+      container.innerHTML = '';
+
+      const firstDayOfMonth = new Date(state.currentYear, state.currentMonth, 1).getDay();
+      const daysInMonth = new Date(state.currentYear, state.currentMonth + 1, 0).getDate();
+      const prevMonthDays = new Date(state.currentYear, state.currentMonth, 0).getDate();
+
+      const today = new Date();
+      const isCurrentMonth = today.getFullYear() === state.currentYear && today.getMonth() === state.currentMonth;
+      const todayDate = today.getDate();
+
+      for (let i = firstDayOfMonth - 1; i >= 0; i--) {
+        const d = prevMonthDays - i;
+        const cell = document.createElement('div');
+        cell.className = 'calendar-cell bg-slate-50/60 p-2 text-slate-300 text-xs font-semibold select-none';
+        cell.innerHTML = `<span>${d}</span>`;
+        container.appendChild(cell);
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `${state.currentYear}-${String(state.currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const isToday = isCurrentMonth && day === todayDate;
+
+        const postsOnThisDay = state.scheduledPosts.filter(p => p.date === dateStr);
+
+        const cell = document.createElement('div');
+        cell.className = `calendar-cell p-2 transition bg-white hover:bg-slate-50/80 flex flex-col justify-between group relative ${isToday ? 'bg-cyan-50/40 ring-1 ring-inset ring-cyan-400' : ''}`;
+        
+        let postsHtml = '';
+        postsOnThisDay.forEach(post => {
+          const meta = categoryMeta[post.category] || categoryMeta.portfolio;
+          postsHtml += `
+            <div onclick="event.stopPropagation(); openEditModalById('${post.id}')" 
+                 class="cursor-pointer ${meta.lightBg} hover:opacity-90 border ${meta.border} rounded-lg p-1.5 shadow-xs transition space-y-0.5 group/item">
+              <div class="flex items-center justify-between">
+                <span class="text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded-full ${meta.bg} text-white">
+                  ${post.category}
+                </span>
+                <span class="text-[10px] font-semibold text-slate-500">${post.time}</span>
+              </div>
+              <p class="text-[11px] font-bold text-slate-800 line-clamp-1 leading-tight mt-0.5">${post.title}</p>
+            </div>
+          `;
+        });
+
+        cell.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="inline-flex items-center justify-center text-xs font-bold ${isToday ? 'w-6 h-6 rounded-full bg-navy text-cyanAccent shadow-xs' : 'text-slate-700'}">
+                ${day}
+              </span>
+              ${postsOnThisDay.length > 0 ? `<span class="text-[10px] font-bold text-slate-400">${postsOnThisDay.length} post</span>` : ''}
+            </div>
+            <div class="space-y-1.5">
+              ${postsHtml}
+            </div>
+          </div>
+          <button onclick="quickAddPostOnDate('${dateStr}')" class="opacity-0 group-hover:opacity-100 text-[10px] font-semibold text-cyan-700 hover:text-cyan-900 mt-1 self-start flex items-center gap-0.5 transition">
+            + Tambah
+          </button>
+        `;
+
+        container.appendChild(cell);
+      }
+
+      const totalCells = firstDayOfMonth + daysInMonth;
+      const remainingCells = (totalCells > 35 ? 42 : 35) - totalCells;
+      for (let i = 1; i <= remainingCells; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'calendar-cell bg-slate-50/60 p-2 text-slate-300 text-xs font-semibold select-none';
+        cell.innerHTML = `<span>${i}</span>`;
+        container.appendChild(cell);
+      }
+
+      lucide.createIcons();
+    }
+
+    function changeMonth(delta) {
+      state.currentMonth += delta;
+      if (state.currentMonth < 0) {
+        state.currentMonth = 11;
+        state.currentYear -= 1;
+      } else if (state.currentMonth > 11) {
+        state.currentMonth = 0;
+        state.currentYear += 1;
+      }
+      renderMonthlyCalendar();
+    }
+
+    function goToCurrentMonth() {
+      const now = new Date();
+      state.currentYear = now.getFullYear();
+      state.currentMonth = now.getMonth();
+      renderMonthlyCalendar();
+    }
+
+    function setCalendarView(mode) {
+      state.calendarViewMode = mode;
+      const gridView = document.getElementById('calendar-grid-view');
+      const listView = document.getElementById('calendar-list-view');
+      const btnGrid = document.getElementById('view-mode-grid');
+      const btnList = document.getElementById('view-mode-list');
+
+      if (mode === 'grid') {
+        gridView.classList.remove('hidden');
+        listView.classList.add('hidden');
+        btnGrid.className = 'px-3 py-1.5 rounded-lg font-bold bg-white text-navy shadow-xs flex items-center gap-1.5 transition';
+        btnList.className = 'px-3 py-1.5 rounded-lg font-medium text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition';
+        renderMonthlyCalendar();
+      } else {
+        gridView.classList.add('hidden');
+        listView.classList.remove('hidden');
+        btnList.className = 'px-3 py-1.5 rounded-lg font-bold bg-white text-navy shadow-xs flex items-center gap-1.5 transition';
+        btnGrid.className = 'px-3 py-1.5 rounded-lg font-medium text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition';
+        renderListView();
+      }
+    }
+
+    function renderListView() {
+      const container = document.getElementById('calendar-list-container');
+      container.innerHTML = '';
+
+      if (state.scheduledPosts.length === 0) {
+        container.innerHTML = `<div class="col-span-full text-center py-12 bg-white rounded-2xl border border-dashed border-slate-300"><p class="text-xs text-slate-500">Belum ada postingan terdaftar.</p></div>`;
+        return;
+      }
+
+      state.scheduledPosts.forEach(post => {
+        const meta = categoryMeta[post.category] || categoryMeta.portfolio;
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-md transition flex flex-col justify-between';
+        card.innerHTML = `
+          <div>
+            <div class="aspect-video bg-slate-100 overflow-hidden relative">
+              <img src="${post.media}" class="w-full h-full object-cover">
+              <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[10px] font-bold ${meta.bg} text-white uppercase">${post.category}</span>
+              <span class="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-900/80 text-cyanAccent">${post.time} WIB</span>
+            </div>
+            <div class="p-4 space-y-1.5">
+              <p class="text-[11px] font-semibold text-slate-500">${post.dateText} • ${post.platform}</p>
+              <h4 class="font-bold text-slate-900 text-sm line-clamp-1">${post.title}</h4>
+              <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed whitespace-pre-wrap">${post.caption}</p>
+            </div>
+          </div>
+          <div class="p-4 pt-0 flex items-center justify-between text-xs border-t border-slate-100 mt-2">
+            <button onclick="openEditModalById('${post.id}')" class="text-cyan-700 font-bold flex items-center gap-1 hover:underline">
+              <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Detail / Edit
+            </button>
+            <span class="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-lg">${post.status}</span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    // ==========================================
+    // UPLOAD & AUTO-PILOT SCHEDULER (5 PILLARS)
+    // ==========================================
+    function triggerFileInput(id) { document.getElementById(id).click(); }
+
+    function handleFileSelect(e, category) {
+      const files = Array.from(e.target.files);
+      if (!files.length) return;
+
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          state.uploadedAssets[category].push({
+            name: file.name,
+            type: file.type.startsWith('video') ? 'video' : 'image',
+            preview: event.target.result,
+            label: file.name
+          });
+          renderCategoryPreview(category);
+          updateCounters();
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function loadSampleAssets() {
+      state.uploadedAssets = JSON.parse(JSON.stringify(sampleDemos));
+      ['portfolio', 'production', 'education', 'shipping', 'testimonial'].forEach(cat => renderCategoryPreview(cat));
+      updateCounters();
+      showToast('Foto & video demo berhasil dimuat ke 5 tombol upload!');
+    }
+
+    function clearAllUploadedAssets() {
+      state.uploadedAssets = { portfolio: [], production: [], education: [], shipping: [], testimonial: [] };
+      ['portfolio', 'production', 'education', 'shipping', 'testimonial'].forEach(cat => renderCategoryPreview(cat));
+      updateCounters();
+      showToast('Semua bahan upload telah dikosongkan.');
+    }
+
+    function renderCategoryPreview(category) {
+      const container = document.getElementById(`preview-${category}`);
+      const assets = state.uploadedAssets[category];
+      container.innerHTML = '';
+
+      assets.forEach((asset, idx) => {
+        const div = document.createElement('div');
+        div.className = 'relative group aspect-square rounded-lg overflow-hidden border border-slate-200 bg-slate-100';
+        div.innerHTML = `
+          <img src="${asset.preview}" class="w-full h-full object-cover">
+          <button onclick="removeAsset('${category}', ${idx})" class="absolute top-1 right-1 w-5 h-5 rounded-full bg-rose-600 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition shadow">
+            &times;
+          </button>
+        `;
+        container.appendChild(div);
+      });
+      lucide.createIcons();
+    }
+
+    function removeAsset(category, index) {
+      state.uploadedAssets[category].splice(index, 1);
+      renderCategoryPreview(category);
+      updateCounters();
+    }
+
+    function updateCounters() {
+      let total = 0;
+      ['portfolio', 'production', 'education', 'shipping', 'testimonial'].forEach(cat => {
+        const count = state.uploadedAssets[cat].length;
+        total += count;
+        document.getElementById(`badge-count-${cat}`).textContent = `${count} file`;
+      });
+      document.getElementById('total-assets-count').textContent = `${total} file terpilih`;
+      document.getElementById('nav-calendar-badge').textContent = state.scheduledPosts.length;
+      document.getElementById('metric-total-scheduled').textContent = state.scheduledPosts.length;
+    }
+
+    function startAutoPilotProcessing() {
+      const total = Object.values(state.uploadedAssets).reduce((sum, arr) => sum + arr.length, 0);
+      if (total === 0) {
+        showToast('Pilih foto/video terlebih dahulu atau buat edukasi AI');
+        return;
+      }
+
+      const notes = document.getElementById('global-upload-notes').value.trim();
+      const modal = document.getElementById('modal-processing');
+      modal.classList.remove('hidden');
+
+      setTimeout(() => {
+        generateSchedulesFromAssets(notes);
+        setTimeout(() => {
+          modal.classList.add('hidden');
+          switchTab('calendar');
+          showToast(`Sukses! ${total} konten berhasil diplot ke kalender!`);
+        }, 1200);
+      }, 1000);
+    }
+
+    const slotMatrix = {
+      portfolio: { dayOffset: 1, time: '12:00', platform: 'Instagram Feed & Facebook' },
+      production: { dayOffset: 3, time: '19:00', platform: 'Instagram Reels & TikTok' },
+      education: { dayOffset: 4, time: '16:00', platform: 'Instagram Carousel & Facebook' },
+      shipping: { dayOffset: 5, time: '15:00', platform: 'Instagram Feed & Facebook' },
+      testimonial: { dayOffset: 6, time: '10:00', platform: 'Instagram Feed & Story' }
+    };
+
+    function generateSchedulesFromAssets(userNotes) {
+      const baseDate = new Date();
+      let dayStep = 1;
+      const categoryKeys = ['portfolio', 'production', 'education', 'shipping', 'testimonial'];
+
+      categoryKeys.forEach(category => {
+        const items = state.uploadedAssets[category];
+        items.forEach((item, idx) => {
+          const config = slotMatrix[category];
+          const postDate = new Date();
+          postDate.setDate(baseDate.getDate() + dayStep + (idx * 2));
+
+          const dateStr = postDate.toISOString().split('T')[0];
+          const formattedDateText = postDate.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short' });
+
+          const captionData = item.customCaption ? { caption: item.customCaption, hashtags: '#teestactical #edukasijersey #tipsjersey' } : createSmartCaption(category, item.label, userNotes);
+
+          state.scheduledPosts.push({
+            id: 'post-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5),
+            category: category,
+            title: item.label,
+            media: item.preview,
+            mediaType: item.type,
+            date: dateStr,
+            time: config.time,
+            dateText: formattedDateText,
+            platform: config.platform,
+            caption: captionData.caption,
+            hashtags: captionData.hashtags,
+            status: 'Scheduled'
+          });
+
+          dayStep += 1;
+        });
+      });
+
+      saveSchedules();
+      renderDashboard();
+      renderMonthlyCalendar();
+      renderListView();
+      updateCounters();
+    }
+
+    function createSmartCaption(category, title, notes) {
+      const noteText = notes ? ` (Detail: ${notes})` : '';
+
+      if (category === 'education') {
+        return {
+          caption: `📚 EDUKASI TEESTACTICAL: ${title.toUpperCase()} 💡\n\nBanyak kapten tim yang sering tanya: "Gimana sih caranya merawat jersey futsal sublimasi biar warnanya tetap awet dan tidak cepat rusak?"\n\nYuk simak tips praktisnya dari tim produksi kami:${noteText}\n\n1️⃣ Jangan cuci pakai air panas (gunakan air dingin/suhu ruang).\n2️⃣ Hindari pemutih pakaian keras karena bisa merusak serat kain dry-fit.\n3️⃣ Jangan peras terlalu kencang & jemur di tempat teduh (jangan langsung di bawah terik matahari ekstrem).\n4️⃣ Setrika dari bagian dalam dengan suhu sedang (jangan setrika langsung bagian sablon/nomor jika ada variasi polyflex).\n\n💡 Jersey awet bikin tim kamu selalu tampil prima di setiap laga!\n\nAda yang mau ditanyakan seputar bahan atau cara perawatan? Konsultasi gratis langsung via WhatsApp kami: +62895423467070 📲`,
+          hashtags: '#teestactical #edukasijersey #tipsjersey #rawatjersey #sublimasijersey #jerseyfutsal #konveksimalang'
+        };
+      } else if (category === 'production') {
+        return {
+          caption: `🔥 INTIP PROSES PRODUKSI TEESTACTICAL! 🔥\n\nBukan sekadar sablon biasa. Setiap pesanan dikerjakan menggunakan mesin printing berstandar kualitas Eropa dan mesin cutting otomatis presisi. Tinta sublim original meresap sempurna ke serat kain, dijamin warna tidak luntur dan detail motif tajam maksimal! ⚡${noteText}\n\n👕 Keunggulan Produksi:\n• Mesin Print Kualitas Eropa\n• Mesin Cutting Otomatis Presisi\n• Jahitan Rantai Kuat Standar Distro\n• Minimum Order Cuma 6 Pcs\n• Gratis Desain Tanpa Batas Revisi!\n\n📲 Wujudkan jersey impian tim kamu bersama kami. Konsultasi langsung via WhatsApp admin di bio (+62895423467070).`,
+          hashtags: '#teestactical #prosesproduksi #sublimasijersey #jerseycustom #konveksijersey #bikinjersey #jerseyfutsal #malang'
+        };
+      } else if (category === 'portfolio') {
+        return {
+          caption: `✨ HASIL JADI: ${title.toUpperCase()} ✨\n\nKombinasi warna solid dan gradasi rapi khas TEESTACTICAL! Menggunakan bahan Dry-Fit Waffle & Premium yang sangat adem, ringan, dan cepat kering saat dipakai tanding intens.${noteText}\n\nPunya ide atau konsep desain sendiri tapi belum bisa menggambar? Tenang! Tim desainer TEESTACTICAL siap buatkan GRATIS tanpa batas revisi sampai kamu puas!\n\n⚽ Info Pemesanan:\n• Minimal order hanya 6 pcs\n• Size anak-anak hingga dewasa (S - XXL)\n• Garansi kualitas & tepat waktu\n\n📲 Hubungi Admin WhatsApp: +62895423467070 atau klik link di bio!`,
+          hashtags: '#teestactical #jerseycustom #jerseymalang #bikinjerseyfutsal #trainingset #tacticalapparel #jerseyset #customapparel'
+        };
+      } else if (category === 'shipping') {
+        return {
+          caption: `📦 ALHAMDULILLAH, KLOTER PENGIRIMAN HARI INI MELUNCUR! 🚚💨\n\nTerima kasih banyak atas kepercayaan para kapten tim, instansi kepolisian, dan kawan-kawan komunitas di seluruh nusantara.${noteText}\n\nSetiap paket dipacking rapi dengan pelindung ganda agar jersey sampai ke tangan Anda dalam kondisi prima dan siap pakai tanding!\n\n📍 Mitra Ekspedisi Resmi:\nJ&T • JNE • INDAH CARGO • LION PARCEL • SICEPAT • CENTRAL CARGO • POS INDONESIA • COD\n\nSiap kirim aman dari Malang ke seluruh Indonesia. Giliran tim kamu kapan nih?\n📲 Chat WhatsApp Admin: +62895423467070`,
+          hashtags: '#teestactical #pengirimannusantara #buktipengiriman #konveksiterpercaya #jerseyfutsal #jerseybola #resipengiriman'
+        };
+      } else {
+        return {
+          caption: `🏆 GAGAH BANGET DI LAPANGAN! TERIMA KASIH KAWAN-KAWAN! 👏🔥\n\nBangga rasanya melihat jersey TEESTACTICAL menemani semangat juang kawan-kawan saat bertanding. Pas di badan, warna menyala, dan nyaman dipakai bergerak seharian!${noteText}\n\n"Jersey keren bikin mental tim naik 200%!" 💯\n\nYuk bikin seragam tempur tim kamu sekarang. Mau Training Set, BDU Tactical, Polo Shirt, atau Jersey Set lengkap? Semuanya bisa di-custom suka-suka!\n\n📲 Fast Response WhatsApp Admin: +62895423467070`,
+          hashtags: '#teestactical #testimonicustomer #juaraturnamen #jerseykompak #futsalindonesia #footballculture #customjersey'
+        };
+      }
+    }
+
+    // ==========================================
+    // MODAL EDIT POST & LIVE PREVIEW
+    // ==========================================
+    function openEditModalById(postId) {
+      const idx = state.scheduledPosts.findIndex(p => p.id === postId);
+      if (idx === -1) return;
+      state.currentEditingIndex = idx;
+      const post = state.scheduledPosts[idx];
+      const meta = categoryMeta[post.category] || categoryMeta.portfolio;
+
+      document.getElementById('edit-category-badge').textContent = post.category.toUpperCase();
+      document.getElementById('edit-category-badge').className = `px-2.5 py-0.5 rounded-full text-xs font-bold ${meta.bg} text-white`;
+      document.getElementById('ig-preview-img').src = post.media;
+      document.getElementById('edit-post-date').value = post.date;
+      document.getElementById('edit-post-time').value = post.time;
+      document.getElementById('edit-post-platform').value = post.platform;
+      document.getElementById('edit-post-caption').value = post.caption + '\n\n' + post.hashtags;
+
+      syncIgPreviewText();
+      document.getElementById('modal-edit-post').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function syncIgPreviewText() {
+      const text = document.getElementById('edit-post-caption').value;
+      document.getElementById('ig-preview-caption').textContent = text;
+    }
+
+    function closeEditModal() {
+      document.getElementById('modal-edit-post').classList.add('hidden');
+      state.currentEditingIndex = null;
+    }
+
+    function saveCurrentPostChanges() {
+      if (state.currentEditingIndex === null) return;
+      const post = state.scheduledPosts[state.currentEditingIndex];
+      post.date = document.getElementById('edit-post-date').value;
+      post.time = document.getElementById('edit-post-time').value;
+      post.platform = document.getElementById('edit-post-platform').value;
+      post.caption = document.getElementById('edit-post-caption').value;
+
+      const d = new Date(post.date);
+      post.dateText = d.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short' });
+
+      saveSchedules();
+      renderDashboard();
+      renderMonthlyCalendar();
+      renderListView();
+      closeEditModal();
+      showToast('Perubahan jadwal berhasil disimpan!');
+    }
+
+    function deleteCurrentPost() {
+      if (state.currentEditingIndex === null) return;
+      state.scheduledPosts.splice(state.currentEditingIndex, 1);
+      saveSchedules();
+      renderDashboard();
+      renderMonthlyCalendar();
+      renderListView();
+      updateCounters();
+      closeEditModal();
+      showToast('Postingan dihapus dari kalender.');
+    }
+
+    function regenerateCaptionInModal() {
+      if (state.currentEditingIndex === null) return;
+      const post = state.scheduledPosts[state.currentEditingIndex];
+      const regenerated = createSmartCaption(post.category, post.title, 'Versi Segar & Bermanfaat');
+      document.getElementById('edit-post-caption').value = regenerated.caption + '\n\n' + regenerated.hashtags;
+      syncIgPreviewText();
+      showToast('Caption baru berhasil digenerate oleh AI!');
+    }
+
+    function quickAddPostOnDate(dateStr) {
+      const postDate = new Date(dateStr);
+      const formattedDateText = postDate.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short' });
+
+      state.scheduledPosts.push({
+        id: 'post-manual-' + Date.now(),
+        category: 'education',
+        title: 'Tips & Edukasi Jersey',
+        media: 'assets/images/jersey-measure.svg',
+        mediaType: 'image',
+        date: dateStr,
+        time: '16:00',
+        dateText: formattedDateText,
+        platform: 'Instagram Carousel & Facebook',
+        caption: `💡 TIPS TEESTACTICAL: Memilih Ukuran Jersey Yang Tepat! 📏\n\nJangan sampai jersey tim kamu kekecilan saat tanding! Gunakan size chart resmi kami untuk panduan akurat. Konsultasi ukuran via WhatsApp: +62895423467070`,
+        hashtags: '#teestactical #sizechart #tipsjersey',
+        status: 'Scheduled'
+      });
+
+      saveSchedules();
+      renderDashboard();
+      renderMonthlyCalendar();
+      renderListView();
+      updateCounters();
+      showToast(`Slot edukasi baru ditambahkan pada ${formattedDateText}!`);
+    }
+
+    function approveAllPosts() {
+      state.scheduledPosts.forEach(p => p.status = 'Approved');
+      saveSchedules();
+      renderDashboard();
+      renderMonthlyCalendar();
+      renderListView();
+      showToast('Semua postingan di kalender telah di-Approve!');
+    }
+
+    function simulatePublishNextPost() {
+      if (state.scheduledPosts.length === 0) {
+        showToast('Tidak ada postingan di kalender.');
+        return;
+      }
+      const post = state.scheduledPosts[0];
+      post.status = 'Published';
+      saveSchedules();
+      renderDashboard();
+      renderMonthlyCalendar();
+      renderListView();
+      showToast(`[SIMULASI] Sukses memposting "${post.title}" ke Instagram Feed & Facebook Page!`);
+    }
+
+    // ==========================================
+    // PROMPT STUDIO & STORAGE HELPERS
+    // ==========================================
+    function generateCustomAiPost() {
+      const topic = document.getElementById('studio-topic-type').value;
+      const outputBox = document.getElementById('studio-result-box');
+      outputBox.textContent = 'Menghubungi AI Agent Copywriter TEESTACTICAL...';
+
+      setTimeout(() => {
+        let result = '';
+        if (topic === 'carousel-edukasi') {
+          result = `Slide 1 (Cover): "5 Tips Memilih Bahan Jersey Futsal yang Adem & Anti Gerah! 💡"\n\nSlide 2: "1. Kenali Jenis Dry-Fit. Bahan Dry-Fit Waffle memiliki tekstur pori kotak yang memaksimalkan sirkulasi udara aktif saat lari kencang."\n\nSlide 3: "2. Hindari Sablon Karet Tebal di Dada. Lebih baik pakai Full Printing Sublimation karena pori-pori kain tetap bernapas bebas."\n\nSlide 4: "3. Perhatikan Bobot Kain. Pilih gramasi ringan (130-150 gsm) agar tidak berat saat basah keringat."\n\nSlide 5: "4. Cek Elastisitas Pola Jahitan. Jahitan rantai di kerah dan lengan mencegah kain robek saat ditarik lawan."\n\nSlide 6 (CTA): "Mau bikin jersey tim dengan bahan juara? Konsultasi gratis sekarang via WhatsApp di bio (+62895423467070)!"\n\n#teestactical #edukasijersey #tipsjersey #futsalindonesia`;
+        } else if (topic === 'rawat-jersey') {
+          result = `👕 CARA BENAR MENCUCI JERSEY CUSTOM SUBLIMASI!\n\nSayang banget kan kalau jersey tim kebanggaan cepat kusam atau sablon nomornya rusak? Ikuti 4 aturan emas ini:\n\n1. Balik jersey saat dicuci (bagian luar di dalam)\n2. Jangan gunakan pemutih pakaian\n3. Jangan diperas dengan mesin pengering putaran tinggi\n4. Jangan disetrika langsung di bagian sablon\n\nSimpan postingan ini biar gak lupa nanti setelah tanding! 🔥\n\n#tipsjersey #perawatanbaju #teestactical #jerseyawet`;
+        } else {
+          result = `🏆 SIAPKAN AMUNISI TEMPUR TIM KAMU JELANG TURNAMEN! 🏆\n\nMental juara dimulai dari jersey yang tepat! TEESTACTICAL hadir memberikan solusi pembuatan jersey custom berkelas dunia.\n\nKenapa harus di TEESTACTICAL?\n✅ Mesin printing standar Eropa (warna super cerah)\n✅ Mesin cutting otomatis presisi tinggi\n✅ Jahitan rantai kuat standar distro\n✅ Minimal order cuma 6 pcs\n✅ Garansi selesai tepat waktu sebelum kick-off turnamen!\n\n📲 Booking slot produksi sekarang via WhatsApp: +62895423467070\n\n#turnamenfutsal #jerseyfutsal #teestactical #bikinjersey`;
+        }
+        outputBox.textContent = result;
+        showToast('Konten edukasi berhasil dibuat oleh AI Copywriter!');
+      }, 500);
+    }
+
+    function pushStudioResultToCalendar() {
+      const text = document.getElementById('studio-result-box').textContent.trim();
+      if (!text || text.startsWith('Klik tombol')) {
+        showToast('Generate konten terlebih dahulu.');
+        return;
+      }
+
+      const postDate = new Date();
+      postDate.setDate(postDate.getDate() + 1);
+
+      state.scheduledPosts.push({
+        id: 'post-studio-' + Date.now(),
+        category: 'education',
+        title: 'Konten Edukasi Bermanfaat',
+        media: 'assets/images/jersey-measure.svg',
+        mediaType: 'image',
+        date: postDate.toISOString().split('T')[0],
+        time: '16:00',
+        dateText: postDate.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short' }),
+        platform: 'Instagram Carousel & Facebook',
+        caption: text,
+        hashtags: '#teestactical #edukasijersey #tipsjersey',
+        status: 'Scheduled'
+      });
+
+      saveSchedules();
+      renderDashboard();
+      renderMonthlyCalendar();
+      renderListView();
+      updateCounters();
+      switchTab('calendar');
+      showToast('Konten edukasi berhasil dimasukkan ke kalender!');
+    }
+
+    function saveSchedules() {
+      try {
+        localStorage.setItem('teestactical_schedules', JSON.stringify(state.scheduledPosts));
+      } catch (e) {}
+    }
+
+    function loadSavedSchedules() {
+      try {
+        const saved = localStorage.getItem('teestactical_schedules');
+        if (saved) state.scheduledPosts = JSON.parse(saved);
+      } catch (e) {
+        state.scheduledPosts = [];
+      }
+    }
+
+    function openApiModal() {
+      document.getElementById('input-gemini-key').value = state.geminiApiKey;
+      document.getElementById('modal-api-settings').classList.remove('hidden');
+    }
+
+    function closeApiModal() {
+      document.getElementById('modal-api-settings').classList.add('hidden');
+    }
+
+    function saveApiSettings() {
+      const key = document.getElementById('input-gemini-key').value.trim();
+      state.geminiApiKey = key;
+      localStorage.setItem('teestactical_gemini_key', key);
+      closeApiModal();
+      showToast('Pengaturan API Key disimpan.');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-message').textContent = msg;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3500);
+    }
+
+    function copyToClipboard(id) {
+      const text = document.getElementById(id).textContent;
+      navigator.clipboard.writeText(text);
+      showToast('Teks disalin ke clipboard!');
+    }
+  </script>
+</body>
+</html>

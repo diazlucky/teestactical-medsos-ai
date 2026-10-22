@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="jerseyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#000955" />
+      <stop offset="100%" stop-color="#0a1b82" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00d2ff" />
+      <stop offset="100%" stop-color="#3aedff" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#000955" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Jersey Outline -->
+  <g filter="url(#shadow)">
+    <!-- Main Body and Sleeves -->
+    <path d="M 180 75 
+             L 220 85 
+             Q 250 110 280 85 
+             L 320 75 
+             L 420 145 
+             L 380 205 
+             L 340 180 
+             L 350 420 
+             L 150 420 
+             L 160 180 
+             L 120 205 
+             L 80 145 
+             Z" 
+          fill="url(#jerseyGrad)" 
+          stroke="#ffffff" 
+          stroke-width="3" />
+
+    <!-- Collar -->
+    <path d="M 220 85 Q 250 120 280 85 Q 250 95 220 85 Z" fill="#ffffff" />
+    <path d="M 220 85 Q 250 135 280 85" fill="none" stroke="#00d2ff" stroke-width="3" stroke-linecap="round"/>
+
+    <!-- Sleeve Cuffs -->
+    <path d="M 80 145 L 120 205" stroke="#ffffff" stroke-width="4" stroke-linecap="round" />
+    <path d="M 420 145 L 380 205" stroke="#ffffff" stroke-width="4" stroke-linecap="round" />
+
+    <!-- Subtle Sport Stripes Accent on Torso -->
+    <path d="M 175 220 L 220 420" stroke="rgba(255,255,255,0.08)" stroke-width="12" />
+    <path d="M 200 220 L 245 420" stroke="rgba(255,255,255,0.06)" stroke-width="8" />
+    <path d="M 325 220 L 280 420" stroke="rgba(255,255,255,0.08)" stroke-width="12" />
+    <path d="M 300 220 L 255 420" stroke="rgba(255,255,255,0.06)" stroke-width="8" />
+
+    <!-- Chest Logo Mockup -->
+    <circle cx="210" cy="170" r="14" fill="rgba(255,255,255,0.15)" stroke="#00d2ff" stroke-width="2"/>
+    <text x="210" y="174" font-family="sans-serif" font-size="10" font-weight="bold" fill="#ffffff" text-anchor="middle">TT</text>
+  </g>
+
+  <!-- Lebar Dada Measurement Line (A) -->
+  <g>
+    <!-- Measurement dashed line -->
+    <line x1="158" y1="210" x2="342" y2="210" stroke="#00d2ff" stroke-width="3" stroke-dasharray="6,4" />
+    <circle cx="158" cy="210" r="4" fill="#00d2ff" />
+    <circle cx="342" cy="210" r="4" fill="#00d2ff" />
+
+    <!-- Arrow Ends -->
+    <polygon points="163,205 153,210 163,215" fill="#00d2ff" />
+    <polygon points="337,205 347,210 337,215" fill="#00d2ff" />
+
+    <!-- Label Badge A -->
+    <rect x="205" y="196" width="90" height="28" rx="14" fill="#ffffff" stroke="#000955" stroke-width="2" />
+    <text x="250" y="215" font-family="'Plus Jakarta Sans', sans-serif" font-size="12" font-weight="bold" fill="#000955" text-anchor="middle">
+      A. Lebar (LD)
+    </text>
+  </g>
+
+  <!-- Panjang Baju Measurement Line (B) -->
+  <g>
+    <!-- Measurement vertical line -->
+    <line x1="380" y1="80" x2="380" y2="420" stroke="#f59e0b" stroke-width="3" stroke-dasharray="6,4" />
+    <circle cx="380" cy="80" r="4" fill="#f59e0b" />
+    <circle cx="380" cy="420" r="4" fill="#f59e0b" />
+
+    <!-- Arrow Ends -->
+    <polygon points="375,87 380,77 385,87" fill="#f59e0b" />
+    <polygon points="375,413 380,423 385,413" fill="#f59e0b" />
+
+    <!-- Horizontal guide markers -->
+    <line x1="320" y1="80" x2="395" y2="80" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="2,2" />
+    <line x1="350" y1="420" x2="395" y2="420" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="2,2" />
+
+    <!-- Label Badge B -->
+    <rect x="390" y="235" width="95" height="28" rx="14" fill="#ffffff" stroke="#f59e0b" stroke-width="2" />
+    <text x="437" y="254" font-family="'Plus Jakarta Sans', sans-serif" font-size="12" font-weight="bold" fill="#d97706" text-anchor="middle">
+      B. Panjang (P)
+    </text>
+  </g>
+
+  <!-- Legend Bottom Box -->
+  <g>
+    <rect x="70" y="445" width="360" height="42" rx="8" fill="#f0f4ff" stroke="#cbd5e1" stroke-width="1" />
+    <text x="250" y="470" font-family="'Plus Jakarta Sans', sans-serif" font-size="12" font-weight="600" fill="#000955" text-anchor="middle">
+      *Ukur kaos terpasang mendatar dari ketiak ke ketiak
+    </text>
+  </g>
+</svg>
+
