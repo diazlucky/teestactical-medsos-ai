@@ -1,12 +1,21 @@
 {
   "name": "teestactical-medsos-ai",
   "version": "1.0.0",
-  "description": "AI Social Media Command Center & Kalender Konten Otomatis untuk TEESTACTICAL",
+  "description": "AI Social Media Command Center & Kalender Konten Otomatis untuk TEESTACTICAL (Cross-platform: Windows, macOS, Linux)",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "mac": "bash start.sh",
+    "open": "node -e \"const p=process.platform; require('child_process').exec(p==='darwin'?'open index.html':p==='win32'?'start index.html':'xdg-open index.html')\""
   },
-  "keywords": ["ai", "social-media", "content-calendar", "teestactical"],
+  "keywords": [
+    "ai",
+    "social-media",
+    "content-calendar",
+    "teestactical",
+    "macos",
+    "cross-platform"
+  ],
   "author": "TEESTACTICAL",
   "license": "ISC"
 }

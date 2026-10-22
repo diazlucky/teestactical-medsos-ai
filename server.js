@@ -1,6 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const { exec } = require('child_process');
 
 const PORT = 3000;
 const MIME_TYPES = {
@@ -28,7 +29,7 @@ const server = http.createServer((req, res) => {
         res.end('404 Not Found');
       } else {
         res.writeHead(500);
-        res.end('Sorry, check with the site admin for error: ' + error.code + ' ..\n');
+        res.end('Internal Server Error: ' + error.code + '\n');
       }
     } else {
       res.writeHead(200, { 'Content-Type': contentType });
@@ -37,9 +38,32 @@ const server = http.createServer((req, res) => {
   });
 });
 
+// Auto-open browser cross-platform helper (macOS, Windows, Linux)
+function autoOpenBrowser(url) {
+  const platform = process.platform;
+  let cmd = '';
+
+  if (platform === 'darwin') {
+    cmd = `open "${url}"`;
+  } else if (platform === 'win32') {
+    cmd = `start "" "${url}"`;
+  } else {
+    cmd = `xdg-open "${url}"`;
+  }
+
+  exec(cmd, (err) => {
+    // Silently continue if open fails
+  });
+}
+
 server.listen(PORT, () => {
+  const url = `http://localhost:${PORT}`;
   console.log(`\n======================================================`);
   console.log(`🚀 TEESTACTICAL AI Social Media Command Center Berjalan!`);
-  console.log(`📡 URL Lokal: http://localhost:${PORT}`);
+  console.log(`📡 URL Lokal: ${url}`);
+  console.log(`💻 Sistem Operasi Terdeteksi: ${process.platform}`);
   console.log(`======================================================\n`);
+
+  // Auto-open browser
+  autoOpenBrowser(url);
 });
